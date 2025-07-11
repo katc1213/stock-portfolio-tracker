@@ -24,7 +24,7 @@ class DatabaseManager:
             self.cursor.execute("""
             CREATE TABLE IF NOT EXISTS stock_prices (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                date TEXT,
+                date DATETIME,
                 ticker TEXT,
                 close REAL
             )
