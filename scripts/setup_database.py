@@ -14,17 +14,19 @@ class DatabaseManager:
             self.cursor.execute("""
             CREATE TABLE IF NOT EXISTS trades (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                date TEXT,
+                date DATE,
                 ticker TEXT,
                 action TEXT,
                 quantity INTEGER,
                 price REAL
             )
             """)
+            
+            # Create stock_prices table
             self.cursor.execute("""
             CREATE TABLE IF NOT EXISTS stock_prices (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                date DATETIME,
+                date DATE,
                 ticker TEXT,
                 close REAL
             )

@@ -30,10 +30,10 @@ fintech-project/
 │   ├── sim_database.db
 │   ├── stock_data.csv
 ├── scripts/
-│   ├── portfolio_tracker.py
-│   ├── simulate_trades.py
 │   ├── setup_database.py
-│   ├── fetch_prices.py
+│   ├── fetch_stock_data.py
+│   ├── simulate_trades.py
+│   ├── portfolio_tracker.py
 ├── outputs/
 │   ├── portfolio_summary.xlsx
 │   └── dashboard.twbx
