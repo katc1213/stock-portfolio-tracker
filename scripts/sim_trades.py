@@ -3,6 +3,7 @@ import sqlite3
 from datetime import datetime 
 import pandas as pd
 import random
+import openpyxl
 
 from fetch_stock_data import FetchPrices
 
@@ -61,3 +62,9 @@ if __name__ == "__main__":
 
     sim.simulate_random_trades(tickers, num_trades=10)
     sim.close()
+    
+    con = sqlite3.connect('/Users/Kat/Documents/repos/stock-portfolio-tracker/data/sim_database.db')
+    df_trades = pd.read_sql("SELECT * FROM trades;", con)
+
+    # Export the DataFrame to an Excel file
+    df_trades.to_excel('/Users/Kat/Documents/repos/stock-portfolio-tracker/outputs/trades_export.xlsx', sheet_name='Trades Data', index=False)
