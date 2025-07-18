@@ -44,11 +44,11 @@ fintech-project/
 ### Week 1
 Goal: Make static stock portfolio tracker with Python and SQLite   
 Tasks:   
-- [ ] Design portfolio schema: trades, holdings, stock_prices  
-- [ ] Use yfinance to pull historical price data
+- [X] Design portfolio schema: trades, holdings, stock_prices  
+- [X] Use yfinance to pull historical price data
     - Example: Top 20 Most Active Stocks from Yahoo finance
 ![alt text](image.png)
-- [ ] Populate SQLite database with stock prices and sample trades
+- [X] Populate SQLite database with stock prices and sample trades
 - [ ] Calculate performance metrics: unrealized gains, ROI, CAGR
 - [ ] Export summary to Excel
 - [ ] Create initial Tableau dashboard: portfolio value over time, allocation by sector  
@@ -57,8 +57,8 @@ Tasks:
 Goal: Simulate trades being added in real-time and update the dashboard  
 Tasks:  
 - [ ] Write a Python script to simulate trades every 10 seconds (buy/sell using Faker)  
-- [ ] Append trades to the trades table  
-- [ ] Periodically pull new prices from yfinance (or simulate price updates)  
+- [X] Append trades to the trades table  
+- [X] Periodically pull new prices from yfinance (or simulate price updates)  
 - [ ] Recalculate holdings and portfolio value every N minutes  
 - [ ] Update Tableau dashboard with auto-refresh or periodic export  
 ---------
