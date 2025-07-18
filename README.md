@@ -57,7 +57,7 @@ Tasks:
 Goal: Simulate trades being added in real-time and update the dashboard  
 Tasks:  
 - [ ] Write a Python script to simulate trades every 10 seconds (buy/sell using Faker)  
-- [X] Append trades to the trades table  
+- [ ] Append trades to the trades table  
 - [ ] Periodically pull new prices from yfinance (or simulate price updates)  
 - [ ] Recalculate holdings and portfolio value every N minutes  
 - [ ] Update Tableau dashboard with auto-refresh or periodic export  
