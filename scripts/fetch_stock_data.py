@@ -32,10 +32,10 @@ class FetchPrices:
                 .get("quotes", [])
             )
             tickers = [q["symbol"] for q in quotes if "symbol" in q]
-            print(f"✅ Pulled {len(tickers)} tickers from Yahoo Finance")
+            print(f"Pulled {len(tickers)} tickers from Yahoo Finance")
             return tickers[:self.num_tickers]
         except Exception as e:
-            print(f"❌ Failed to fetch tickers: {e}")
+            print(f"Failed to fetch tickers: {e}")
             return []
 
     def fetch_intraday_prices(self, tickers):
@@ -43,7 +43,7 @@ class FetchPrices:
         frames = []
         for tkr in tickers:
             try:
-                print(f"📡 Fetching {tkr} intraday data...")
+                print(f"Fetching {tkr} intraday data...")
                 df = yf.download(tkr, period="1d", interval="1m")[['Close']].copy()
                 df.reset_index(inplace=True)
 
@@ -59,20 +59,20 @@ class FetchPrices:
                 frames.append(df)
 
             except Exception as e:
-                print(f"⚠️ Failed to fetch {tkr}: {e}")
+                print(f"Error: Failed to fetch {tkr}: {e}")
         return pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
 
     def insert_into_database(self, df):
         """Insert DataFrame into SQLite 'stock_prices' table."""
         if df.empty:
-            print("⚠️ No data to insert into database.")
+            print("Error: No data to insert into database.")
             return
         try:
             with sqlite3.connect(self.db_path) as conn:
                 df.to_sql("stock_prices", conn, if_exists="append", index=False)
-            print(f"✅ Inserted {len(df)} rows into 'stock_prices'")
+            print(f"Inserted {len(df)} rows into 'stock_prices'")
         except Exception as e:
-            print(f"❌ DB insert error: {e}")
+            print(f"DB insert error: {e}")
             
         
 
