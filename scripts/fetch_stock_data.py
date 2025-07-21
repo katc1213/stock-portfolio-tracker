@@ -3,6 +3,7 @@ import sqlite3
 import requests
 import yfinance as yf
 import pandas as pd
+from datetime import datetime, timedelta
 
 class FetchPrices:
     def __init__(self, db_path="../../stock-portfolio-tracker/data/sim_database.db", num_tickers=10):
@@ -73,6 +74,19 @@ class FetchPrices:
             print(f"Inserted {len(df)} rows into 'stock_prices'")
         except Exception as e:
             print(f"DB insert error: {e}")
+    
+    # delete data from previous days to get data from past week only
+    def delete_from_database(self, df):
+        with sqlite3.connect(self.db_path) as conn:
+            # datetimeobj to str
+            week_dates = (datetime.now() - timedelta(days=7)).isoformat()
+            conn.cursor().execute("""
+                                DELETE FROM stock_prices
+                                WHERE date < ?
+                                """,(week_dates,))
+        conn.commit()
+        conn.close()
+        print(f"Old records deleted from trades from more than week ago")
             
         
 
@@ -82,6 +96,7 @@ class FetchPrices:
         if tickers:
             df = self.fetch_intraday_prices(tickers)
             self.insert_into_database(df)
+            self.delete_from_database(df)
             
             # Load data into stock_data.csv
             csv_path = os.path.abspath("../../stock-portfolio-tracker/data/stock_data.csv")

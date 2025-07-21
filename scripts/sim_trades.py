@@ -22,6 +22,7 @@ class TradeSim:
                             ORDER BY date DESC
                             LIMIT 1
                             """,(ticker,))
+        # fetch ticker row info
         result = self.cursor.fetchone()
         return result[0] if result else None
 
@@ -38,7 +39,7 @@ class TradeSim:
                             INSERT INTO trades (date, ticker, action, quantity, price)
                             VALUES (?, ?, ?, ?, ?)
                             """, (date, ticker, action, quantity, price))
-        self.conn.commit() #confirm the changes made by the user to the database
+        self.conn.commit() # confirm the changes made by the user to the database
         print(f"{action.title()} {quantity} shares of {ticker} at ${price:.2f} per share.")
         
     def simulate_random_trades(self, tickers, num_trades=5):

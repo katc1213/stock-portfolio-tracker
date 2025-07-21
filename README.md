@@ -40,9 +40,8 @@ fintech-project/
 ├── README.md
 ```
 
-## Timeline
-### Week 1
-Goal: Make static stock portfolio tracker with Python and SQLite   
+## Tasking
+### Make static stock portfolio tracker with Python and SQLite   
 Tasks:   
 - [X] Design portfolio schema: trades, holdings, stock_prices  
 - [X] Use yfinance to pull historical price data
@@ -52,20 +51,28 @@ Tasks:
 - [ ] Calculate performance metrics: unrealized gains, ROI, CAGR
 - [ ] Export summary to Excel
 - [ ] Create initial Tableau dashboard: portfolio value over time, allocation by sector  
----------
-### Week 2
-Goal: Simulate trades being added in real-time and update the dashboard  
+
+### Goal: Simulate trades being added in real-time and update the dashboard  
 Tasks:  
 - [ ] Write a Python script to simulate trades every 10 seconds (buy/sell using Faker)  
 - [ ] Append trades to the trades table  
 - [ ] Periodically pull new prices from yfinance (or simulate price updates)  
 - [ ] Recalculate holdings and portfolio value every N minutes  
 - [ ] Update Tableau dashboard with auto-refresh or periodic export  
----------
-### Week 3
-Goal: Finalize insights  
+
+### Goal: Finalize insights  
 Tasks:
 - [ ] Add derived metrics (e.g. Sharpe ratio, max drawdown)  
 - [ ] Create Excel reports with charts + pivot tables  
 - [ ] Add interactivity to Tableau (e.g. filter by ticker or sector)  
 - [ ] Publish Tableau dashboard (Public) or record a demo
+
+## Trading Strategies
+| Strategy Type          | Interval | Period Needed | Notes                    |
+| ---------------------- | -------- | ------------- | ------------------------ |
+| Momentum scalping      | 1m       | 5–10 days     | Fast entry/exit          |
+| VWAP or EMA-based      | 5m       | 15–30 days    | Good for trend following |
+| Mean reversion         | 1m or 5m | 1–2 months    | Needs price swings       |
+| Opening range breakout | 15m      | 1 month       | Focuses on first 1–2 hrs |
+| Pairs/stat arb         | 1m       | >1 month      | Needs large samples      |
+
