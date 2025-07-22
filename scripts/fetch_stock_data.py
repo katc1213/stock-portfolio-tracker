@@ -76,6 +76,7 @@ class FetchPrices:
             print(f"DB insert error: {e}")
     
     # delete data from previous days to get data from past week only
+    # maybe do one day so updates portfolio daily?
     def delete_from_database(self, df):
         with sqlite3.connect(self.db_path) as conn:
             # datetimeobj to str
