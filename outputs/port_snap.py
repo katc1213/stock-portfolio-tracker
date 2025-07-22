@@ -10,7 +10,9 @@
 
 import sqlite3
 import pandas as pd
+import matplotlib.pyplot as plt
 import csv
+from datetime import datetime
 
 class StockPortfolio:
     def __init__(self, db_path="../../stock-portfolio-tracker/data/sim_database.db"):
@@ -26,34 +28,74 @@ class StockPortfolio:
     # for completed trades => realized_pnl = (sell price - avg cost) * quantity sold
     def compute_real_pnl(self) -> dict:
         trades_df = self.get_trades()
-        positions = {} # create pos dict
-        
+        trades_df["date"] = pd.to_datetime(trades_df["date"])
+        trades_df = trades_df.sort_values("date")
+
+        positions = {}
+        daily_pnl = {}
+
         for _, row in trades_df.iterrows():
-            ticker = row['ticker'] #upper()
+            ticker = row['ticker']
             quantity = row['quantity']
             price = row["price"]
+            date = row["date"]
+
             if ticker not in positions:
                 positions[ticker] = {
                     'quantity': 0,
                     'total_cost': 0.0,
                     'real_pnl': 0.0
                 }
-            if row['action'] == 'buy': #lower()
-                total_cost = positions[ticker]['total_cost'] + (quantity * price)
-                total_quantity = positions[ticker]['quantity'] + quantity
-                
-                positions[ticker]['total_cost'] = total_cost
-                positions[ticker]['quantity'] = total_quantity
-            elif row['action'] == 'sell':
+
+            if ticker not in daily_pnl:
+                daily_pnl[ticker] = []
+
+            if row['action'].lower() == 'buy':
+                positions[ticker]['total_cost'] += quantity * price
+                positions[ticker]['quantity'] += quantity
+                daily_pnl[ticker].append((date, positions[ticker]['real_pnl']))
+
+            elif row['action'].lower() == 'sell':
                 sold_quantity = quantity
-                avg_cost = positions[ticker]['total_cost'] / max(positions[ticker]["quantity"] + quantity, 1)
+                prev_quantity = positions[ticker]["quantity"] + quantity  # assume quantity is positive for both buy/sell
+
+                avg_cost = positions[ticker]['total_cost'] / max(prev_quantity, 1)
                 new_real_pnl = (price - avg_cost) * sold_quantity
-                
+
                 positions[ticker]['total_cost'] -= avg_cost * sold_quantity
                 positions[ticker]['quantity'] -= sold_quantity
                 positions[ticker]['real_pnl'] += new_real_pnl
-                
+
+                daily_pnl[ticker].append((date, positions[ticker]['real_pnl']))
+
+        # Plot cumulative realized PnL by ticker
+        import matplotlib.pyplot as plt
+        import matplotlib.dates as mdates
+
+        plt.figure(figsize=(12, 6))
+
+        for ticker, entries in daily_pnl.items():
+            if not entries:
+                continue
+            # Sort by date
+            entries = sorted(entries, key=lambda x: x[0])
+            dates, pnls = zip(*entries)
+            cumulative_pnls = [sum(pnls[:i + 1]) for i in range(len(pnls))]
+
+            plt.plot(dates, cumulative_pnls, marker='o', label=ticker)
+
+        plt.title("Cumulative Realized PnL by Ticker Over Time")
+        plt.xlabel("Date")
+        plt.ylabel("Realized PnL ($)")
+        plt.legend(title="Ticker")
+        plt.grid(True)
+        plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        plt.show()
+
         return positions
+
     
     # unreal_pnl = (live market price - avg cost) * quantity
     def compute_unreal_pnl(self) -> dict:
